@@ -1,1 +1,14 @@
+@import url(https://fonts.googleapis.com/css?family=Outfit:100,200,300,regular,500,600,700,800,900);
+@import url(https://fonts.googleapis.com/css?family=Prata:regular);
+
 @import "tailwindcss";
+
+*{
+  font-family: Outfit;
+}
+
+.prata-regular{
+  font-family: "Prata",serif;
+  font-weight: 400;
+  font-style: normal;
+}
