@@ -4,35 +4,38 @@ const NewsletterBox = () => {
   const onSubmitHandler = (event) => {
     event.preventDefault();
   };
+
   return (
-    <div className="text-center">
-      <p className="text-2xl font-medium text-gray-800">
+    <div className="py-16 px-4 text-center bg-gray-50 rounded-lg shadow-sm">
+      <p className="text-2xl sm:text-3xl font-semibold text-gray-800">
         Get 20% Off Your First Order
       </p>
-      <p className="text-gray-400 mt-3">
+
+      <p className="text-gray-500 mt-4 max-w-xl mx-auto leading-relaxed">
         Be the first to discover new arrivals, exclusive offers, and curated
         style updates — delivered straight to your inbox.
       </p>
-      <div className="w-full sm:w-1/2 mx-auto mt-6">
+
+      <div className="w-full max-w-xl mx-auto mt-8">
         <form
           onSubmit={onSubmitHandler}
-          className="flex items-center border border-gray-300 pl-4 rounded-sm"
+          className="flex items-stretch border border-gray-300 rounded-md overflow-hidden"
         >
           <input
-            className="w-full outline-none py-3 text-sm placeholder:text-gray-400"
+            className="flex-1 px-4 py-3 text-sm outline-none placeholder:text-gray-400"
             type="email"
             placeholder="Enter your email"
             required
           />
           <button
             type="submit"
-            className="bg-black text-white text-xs px-10 py-4 hover:bg-gray-800 transition-colors duration-300"
+            className="bg-black text-white text-xs sm:text-sm px-6 sm:px-8 py-3 hover:bg-gray-800 transition"
           >
             SUBSCRIBE
           </button>
         </form>
 
-        <p className="text-xs text-gray-400 mt-2 text-center">
+        <p className="text-xs text-gray-400 mt-3">
           No spam. Unsubscribe anytime.
         </p>
       </div>
