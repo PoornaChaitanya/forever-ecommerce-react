@@ -105,12 +105,14 @@ const ShopContextProvider = (props) => {
     return totalAmount;
   };
 
-  const placeOrder = () => {
+  const placeOrder = (deliveryInfo, paymentMethod) => {
     if (Object.keys(cartItems).length === 0) return;
 
     const newOrder = {
       id: Date.now(),
       items: cartItems,
+      deliveryInfo: deliveryInfo || {},
+      paymentMethod: paymentMethod || "cod",
       date: new Date().toLocaleDateString(),
       status: "Ready to ship",
     };

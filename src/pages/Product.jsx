@@ -57,30 +57,37 @@ const Product = () => {
         {/* Product Information */}
         <div className="flex-1">
           <h1 className="font-medium text-2xl mt-2">{productData.name}</h1>
-          {(() => {
-            const hash = productData.id
-              .split("")
-              .reduce((acc, c) => acc + c.charCodeAt(0), 0);
-            const rating = (hash % 3) + 3; // 3, 4, or 5 stars
-            const reviewCount = 50 + (hash % 200);
-            return (
-              <div className="flex items-center gap-1 mt-2">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <img
-                    key={i}
-                    src={i < rating ? star_icon : star_dull_icon}
-                    alt="star"
-                    className="w-2.5"
-                  />
-                ))}
-                <p className="pl-2">({reviewCount})</p>
-              </div>
-            );
-          })()}
-          <p className="mt-5 text-3xl font-medium">
-            {currency}
-            {productData.price.toLocaleString()}
-          </p>
+          <div className="flex items-center gap-1 mt-2">
+            {Array.from({ length: 5 }, (_, i) => (
+              <img
+                key={i}
+                src={i < productData.rating ? star_icon : star_dull_icon}
+                alt="star"
+                className="w-3.5"
+              />
+            ))}
+            <p className="pl-2 text-sm text-gray-500">
+              ({productData.reviews})
+            </p>
+          </div>
+          <div className="flex items-center gap-3 mt-5">
+            <p className="text-3xl font-medium">
+              {currency}
+              {productData.price.toLocaleString()}
+            </p>
+            {productData.original &&
+              productData.original > productData.price && (
+                <>
+                  <p className="text-lg text-gray-400 line-through">
+                    {currency}
+                    {productData.original.toLocaleString()}
+                  </p>
+                  <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">
+                    {productData.discount}% OFF
+                  </span>
+                </>
+              )}
+          </div>
           <p className="mt-5 text-gray-500 md:w-4/5">
             {productData.description}
           </p>
@@ -117,7 +124,9 @@ const Product = () => {
       <div className="mt-20">
         <div className="flex">
           <b className="border px-5 py-3 text-sm">Description</b>
-          <p className="border px-5 py-3 text-sm">Reviews(122)</p>
+          <p className="border px-5 py-3 text-sm">
+            Reviews ({productData.reviews})
+          </p>
         </div>
         <div className="flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500">
           <p>

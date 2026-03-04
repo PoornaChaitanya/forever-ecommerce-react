@@ -38,6 +38,8 @@ const Cart = () => {
             (product) => product.id === item._id,
           );
 
+          if (!productData) return null;
+
           return (
             <div
               key={`${item._id}-${item.size}`}
