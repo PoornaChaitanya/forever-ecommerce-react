@@ -20,17 +20,35 @@ const ShopContextProvider = (props) => {
       return {};
     }
   });
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(() => {
+    try {
+      const saved = localStorage.getItem("orders");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      const saved = localStorage.getItem("wishlist");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL;
   const fetchProducts = async () => {
+    setError(null);
     try {
       const response = await axios.get(`${API_URL}/products`);
       setProducts(response.data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      setError("Failed to load products. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -44,6 +62,16 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  // Sync orders to localStorage
+  useEffect(() => {
+    localStorage.setItem("orders", JSON.stringify(orders));
+  }, [orders]);
+
+  // Sync wishlist to localStorage
+  useEffect(() => {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
 
   const addToCart = (itemId, size) => {
     if (!size) {
@@ -62,6 +90,8 @@ const ShopContextProvider = (props) => {
 
       return cartData;
     });
+
+    toast.success("Added to cart!", { autoClose: 1500 });
   };
 
   const getCartCount = () => {
@@ -103,14 +133,11 @@ const ShopContextProvider = (props) => {
   const getCartAmount = () => {
     let totalAmount = 0;
     for (const items in cartItems) {
-      let itemInfo = products.find((product) => product.id === items);
+      const itemInfo = products.find((product) => product.id === items);
+      if (!itemInfo) continue; // product no longer in catalog
       for (const item in cartItems[items]) {
-        try {
-          if (cartItems[items][item] > 0) {
-            totalAmount += itemInfo.price * cartItems[items][item];
-          }
-        } catch (error) {
-          console.error("Error calculating cart amount:", error);
+        if (cartItems[items][item] > 0) {
+          totalAmount += itemInfo.price * cartItems[items][item];
         }
       }
     }
@@ -118,10 +145,10 @@ const ShopContextProvider = (props) => {
   };
 
   const placeOrder = (deliveryInfo, paymentMethod) => {
-    if (Object.keys(cartItems).length === 0) return;
+    if (getCartCount() === 0) return;
 
     const newOrder = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       items: cartItems,
       deliveryInfo: deliveryInfo || {},
       paymentMethod: paymentMethod || "cod",
@@ -134,9 +161,21 @@ const ShopContextProvider = (props) => {
     setCartItems({});
   };
 
+  const toggleWishlist = (productId) => {
+    setWishlist((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId],
+    );
+  };
+
+  const isWishlisted = (productId) => wishlist.includes(productId);
+
   const value = {
     products,
     loading,
+    error,
+    fetchProducts,
     currency,
     delivery_fee,
     search,
@@ -151,6 +190,9 @@ const ShopContextProvider = (props) => {
     navigate,
     orders,
     placeOrder,
+    wishlist,
+    toggleWishlist,
+    isWishlisted,
   };
 
   return (

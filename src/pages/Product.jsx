@@ -4,6 +4,7 @@ import { ShopContext } from "../context/ShopContext";
 import star_icon from "../assets/star_icon.png";
 import star_dull_icon from "../assets/star_dull_icon.png";
 import RelatedProducts from "./RelatedProducts";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Product = () => {
   const { productId } = useParams();
@@ -11,6 +12,7 @@ const Product = () => {
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
+  usePageTitle(productData ? productData.name : "Product");
 
   const fetchProductData = () => {
     const foundProduct = products.find((item) => item.id === productId);
@@ -31,26 +33,30 @@ const Product = () => {
   }, [productId]);
 
   return productData ? (
-    <div className="border-t pt-10 transition-opacity ease-in duration-500 opacity-100">
+    <div className="border-t pt-6 sm:pt-10 transition-opacity ease-in duration-500 opacity-100">
       {/* Product Data */}
-      <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
+      <div className="flex gap-8 sm:gap-12 flex-col sm:flex-row">
         {/* Product Images */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
-          <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-1/5 w-full">
+          <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-1/5 w-full gap-2 sm:gap-0">
             {productData.image.map((item, index) => (
               <img
                 src={item}
                 key={index}
-                alt="dress"
+                alt={`${productData.name} - view ${index + 1}`}
                 onClick={() => setImage(item)}
-                className={`w-1/4 sm:w-full sm:mb-3 shrink-0 cursor-pointer border transition ${
+                className={`w-1/4 sm:w-full sm:mb-3 shrink-0 cursor-pointer border transition rounded-md ${
                   item === image ? "border-black" : "border-transparent"
                 }`}
               />
             ))}
           </div>
           <div className="w-full sm:w-[80%]">
-            <img src={image} alt="dress" className="w-full h-auto" />
+            <img
+              src={image}
+              alt={productData.name}
+              className="w-full h-auto rounded-lg"
+            />
           </div>
         </div>
 
@@ -61,7 +67,9 @@ const Product = () => {
               {productData.brand}
             </p>
           )}
-          <h1 className="font-medium text-2xl mt-2">{productData.name}</h1>
+          <h1 className="font-medium text-xl sm:text-2xl mt-2">
+            {productData.name}
+          </h1>
           <div className="flex items-center gap-1 mt-2">
             {Array.from({ length: 5 }, (_, i) => (
               <img
@@ -75,8 +83,8 @@ const Product = () => {
               ({productData.reviews})
             </p>
           </div>
-          <div className="flex items-center gap-3 mt-5">
-            <p className="text-3xl font-medium">
+          <div className="flex flex-wrap items-center gap-3 mt-5">
+            <p className="text-2xl sm:text-3xl font-medium">
               {currency}
               {productData.price.toLocaleString()}
             </p>
@@ -93,7 +101,7 @@ const Product = () => {
                 </>
               )}
           </div>
-          <p className="mt-5 text-gray-500 md:w-4/5">
+          <p className="mt-5 text-gray-500 text-sm sm:text-base md:w-4/5">
             {productData.description}
           </p>
 
@@ -126,9 +134,9 @@ const Product = () => {
             </div>
           )}
 
-          <div className="flex flex-col gap-4 my-8">
+          <div className="flex flex-col gap-4 my-6 sm:my-8">
             <p>Select Size</p>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {productData.sizes.map((item, index) => (
                 <button
                   key={index}
@@ -143,7 +151,7 @@ const Product = () => {
           <button
             onClick={() => addToCart(productData.id, size)}
             disabled={productData.stock === 0}
-            className={`px-8 py-3 text-sm transition ${
+            className={`w-full sm:w-auto px-8 py-3 text-sm transition ${
               productData.stock === 0
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : "bg-black text-white active:bg-gray-700"

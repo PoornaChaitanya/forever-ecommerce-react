@@ -10,15 +10,18 @@ import Login from "./pages/Login";
 import PlaceOrder from "./pages/PlaceOrder";
 import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
+import Wishlist from "./pages/Wishlist";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SearchBar from "./components/SearchBar";
 import { ToastContainer } from "react-toastify";
+import BackToTop from "./components/BackToTop";
 
 const App = () => {
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <ToastContainer />
+      <BackToTop />
       <Navbar />
       <SearchBar />
       <Routes>
@@ -31,6 +34,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

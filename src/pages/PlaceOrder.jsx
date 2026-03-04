@@ -5,10 +5,12 @@ import stripe_logo from "../assets/stripe_logo.png";
 import razorpay_logo from "../assets/razorpay_logo.png";
 import { ShopContext } from "../context/ShopContext";
 import { toast } from "react-toastify";
+import usePageTitle from "../hooks/usePageTitle";
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
   const { navigate, placeOrder, cartItems } = useContext(ShopContext);
+  usePageTitle("Checkout");
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -64,10 +66,10 @@ const PlaceOrder = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t"
+      className="flex flex-col sm:flex-row justify-between gap-6 sm:gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t"
     >
       {/* Left Side */}
-      <div className="flex flex-col gap-4 w-full sm:max-w-120">
+      <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
         <div className="text-xl sm:text-2xl my-3">
           <Title text1={"DELIVERY"} text2={"INFORMATION"} />
         </div>
@@ -80,7 +82,7 @@ const PlaceOrder = () => {
             onChange={handleChange}
             placeholder="First name"
             required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
           />
           <input
             type="text"
@@ -89,7 +91,7 @@ const PlaceOrder = () => {
             onChange={handleChange}
             placeholder="Last name"
             required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
           />
         </div>
         <input
@@ -99,7 +101,7 @@ const PlaceOrder = () => {
           onChange={handleChange}
           placeholder="Email address"
           required
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
         />
         <input
           type="text"
@@ -108,7 +110,7 @@ const PlaceOrder = () => {
           onChange={handleChange}
           placeholder="Street"
           required
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
         />
 
         <div className="flex gap-3">
@@ -119,7 +121,7 @@ const PlaceOrder = () => {
             onChange={handleChange}
             placeholder="City"
             required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
           />
           <input
             type="text"
@@ -128,7 +130,7 @@ const PlaceOrder = () => {
             onChange={handleChange}
             placeholder="State"
             required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
           />
         </div>
 
@@ -140,7 +142,7 @@ const PlaceOrder = () => {
             onChange={handleChange}
             placeholder="Zipcode"
             required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
           />
           <input
             type="text"
@@ -149,7 +151,7 @@ const PlaceOrder = () => {
             onChange={handleChange}
             placeholder="Country"
             required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
           />
         </div>
         <input
@@ -159,60 +161,64 @@ const PlaceOrder = () => {
           onChange={handleChange}
           placeholder="Phone"
           required
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className="border border-gray-300 rounded py-1.5 px-3.5 w-full text-sm"
         />
       </div>
 
       {/* Right Side */}
-      <div className="mt-8">
-        <div className="mt-8 min-w-80">
+      <div className="w-full sm:min-w-80 sm:max-w-sm">
+        <div className="mt-4 sm:mt-8">
           <CartTotal />
         </div>
 
-        <div className="mt-12">
+        <div className="mt-8 sm:mt-12">
           <Title text1={"PAYMENT"} text2={"METHOD"} />
 
           {/* Payment Method */}
-          <div className="flex gap-3 flex-col lg:flex-row">
+          <div className="flex gap-4 flex-col lg:flex-row mt-5">
             <div
               onClick={() => setMethod("stripe")}
-              className={`flex items-center gap-3 border p-2 px-3 cursor-pointer ${method === "stripe" ? "border-black" : ""}`}
+              className={`flex-1 flex items-center justify-center sm:justify-start gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "stripe" ? "border-black bg-gray-50" : "border-gray-200"}`}
             >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${method === "stripe" ? "bg-green-400" : ""}`}
-              ></p>
-              <img src={stripe_logo} alt="stripe logo" className="h-5 mx-4" />
+              <span
+                className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full transition-colors ${method === "stripe" ? "bg-green-500 border-green-500" : "bg-white"}`}
+              ></span>
+              <img
+                src={stripe_logo}
+                alt="stripe logo"
+                className="h-5 object-contain"
+              />
             </div>
             <div
               onClick={() => setMethod("razorpay")}
-              className={`flex items-center gap-3 border p-2 px-3 cursor-pointer ${method === "razorpay" ? "border-black" : ""}`}
+              className={`flex-1 flex items-center justify-center sm:justify-start gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "razorpay" ? "border-black bg-gray-50" : "border-gray-200"}`}
             >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${method === "razorpay" ? "bg-green-400" : ""}`}
-              ></p>
+              <span
+                className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full transition-colors ${method === "razorpay" ? "bg-green-500 border-green-500" : "bg-white"}`}
+              ></span>
               <img
                 src={razorpay_logo}
                 alt="razorpay logo"
-                className="h-5 mx-4"
+                className="h-5 object-contain"
               />
             </div>
             <div
               onClick={() => setMethod("cod")}
-              className={`flex items-center gap-3 border p-2 px-3 cursor-pointer ${method === "cod" ? "border-black" : ""}`}
+              className={`flex-1 flex items-center justify-center sm:justify-start gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "cod" ? "border-black bg-gray-50" : "border-gray-200"}`}
             >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${method === "cod" ? "bg-green-400" : ""}`}
-              ></p>
-              <p className="text-gray-500 text-sm font-medium mx-4">
+              <span
+                className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full transition-colors ${method === "cod" ? "bg-green-500 border-green-500" : "bg-white"}`}
+              ></span>
+              <span className="text-gray-700 text-sm font-semibold whitespace-nowrap">
                 CASH ON DELIVERY
-              </p>
+              </span>
             </div>
           </div>
 
-          <div className="w-full text-end mt-8">
+          <div className="w-full mt-6 sm:mt-8">
             <button
               type="submit"
-              className="w-full bg-black text-white py-3 mt-8 rounded-md hover:bg-gray-800 transition"
+              className="w-full bg-black text-white py-3 rounded-md hover:bg-gray-800 transition"
             >
               PLACE ORDER
             </button>

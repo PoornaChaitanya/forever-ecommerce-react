@@ -2,22 +2,24 @@ import React from "react";
 import Title from "../components/Title";
 import about_img from "../assets/about_img.png";
 import NewsletterBox from "../components/NewsletterBox";
+import usePageTitle from "../hooks/usePageTitle";
 
 const About = () => {
+  usePageTitle("About Us");
   return (
     <div>
       {/* About Section */}
-      <div className="text-2xl text-center pt-16 border-t">
+      <div className="text-xl sm:text-2xl text-center pt-10 sm:pt-16 border-t">
         <Title text1={"ABOUT"} text2={"US"} />
       </div>
 
-      <div className="my-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div className="my-10 sm:my-16 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
         <img
           src={about_img}
           alt="Fashion collection showcase"
-          className="w-full rounded-xl shadow-md object-cover"
+          className="w-full rounded-xl shadow-md object-cover max-h-80 sm:max-h-none"
         />
-        <div className="flex flex-col gap-6  text-gray-600">
+        <div className="flex flex-col gap-5 sm:gap-6 text-gray-600 text-sm sm:text-base">
           <p>
             At Forever, we believe fashion should feel effortless, timeless, and
             accessible to everyone. Our journey began with a simple goal — to
@@ -32,7 +34,9 @@ const About = () => {
             occasion, our designs are made to adapt seamlessly to your
             lifestyle.
           </p>
-          <h3 className="text-lg font-semibold text-gray-800">Our Mission</h3>
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800">
+            Our Mission
+          </h3>
           <p>
             Our mission is to deliver high-quality fashion that empowers
             confidence and self-expression. We aim to build a brand that values
@@ -42,15 +46,15 @@ const About = () => {
         </div>
       </div>
 
-      <hr className="my-16 border-gray-200" />
+      <hr className="my-10 sm:my-16 border-gray-200" />
 
       {/* Why Section */}
-      <div className="text-xl py-8">
+      <div className="text-lg sm:text-xl py-6 sm:py-8">
         <Title text1={"WHY"} text2={"CHOOSE US"} />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 text-sm mb-20">
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5 hover:shadow-xl hover:-translate-y-1 transition duration-300">
+      <div className="grid grid-cols-1 sm:grid-cols-3 text-sm mb-12 sm:mb-20">
+        <div className="border px-8 sm:px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-4 sm:gap-5 hover:shadow-xl hover:-translate-y-1 transition duration-300">
           <b>Quality Assurance</b>
           <p className="text-gray-600">
             We prioritize premium fabrics and expert craftsmanship to ensure
@@ -58,7 +62,7 @@ const About = () => {
           </p>
         </div>
 
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5 hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div className="border px-8 sm:px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-4 sm:gap-5 hover:shadow-xl hover:-translate-y-1 transition duration-300">
           <b>Convenience</b>
           <p className="text-gray-600">
             Enjoy a seamless shopping experience with easy navigation, secure
@@ -66,7 +70,7 @@ const About = () => {
           </p>
         </div>
 
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5 hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div className="border px-8 sm:px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-4 sm:gap-5 hover:shadow-xl hover:-translate-y-1 transition duration-300">
           <b>Exceptional Customer Service</b>
           <p className="text-gray-600">
             Our dedicated support team is always ready to assist you, ensuring a

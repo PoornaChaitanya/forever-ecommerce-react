@@ -4,13 +4,27 @@ import Title from "./Title";
 import ProductItem from "./ProductItem";
 
 const BestSeller = () => {
-  const { products, loading } = useContext(ShopContext);
+  const { products, loading, error, fetchProducts } = useContext(ShopContext);
   const [bestSeller, setBestSeller] = useState([]);
 
   useEffect(() => {
     const bestProduct = products.filter((item) => item.bestseller);
     setBestSeller(bestProduct.slice(0, 5));
   }, [products]);
+  if (error) {
+    return (
+      <div className="my-6 sm:my-10 text-center py-12">
+        <p className="text-gray-500 mb-4">{error}</p>
+        <button
+          onClick={fetchProducts}
+          className="bg-black text-white px-6 py-2 rounded-md text-sm hover:bg-gray-800 transition"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="my-6 sm:my-10">
       <div className="text-center text-2xl sm:text-3xl py-6 sm:py-8">
@@ -34,9 +48,9 @@ const BestSeller = () => {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 sm:gap-y-6">
-          {bestSeller.map((item, index) => (
+          {bestSeller.map((item) => (
             <ProductItem
-              key={index}
+              key={item.id}
               id={item.id}
               name={item.name}
               image={item.image}

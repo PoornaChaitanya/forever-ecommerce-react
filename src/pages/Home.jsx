@@ -4,8 +4,10 @@ import LatestCollection from "../components/LatestCollection";
 import BestSeller from "../components/BestSeller";
 import OurPolicy from "../components/OurPolicy";
 import NewsletterBox from "../components/NewsletterBox";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Home = () => {
+  usePageTitle("Home");
   return (
     <div>
       <Hero />

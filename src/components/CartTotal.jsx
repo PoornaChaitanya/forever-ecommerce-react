@@ -37,8 +37,8 @@ const CartTotal = () => {
         </div>
         {cartAmount > 0 && cartAmount < threshold && (
           <p className="text-xs text-gray-500 mt-1 text-right">
-            Missing {currency}
-            {(threshold - cartAmount).toLocaleString()} for Free Shipping
+            Shop {currency}
+            {(threshold - cartAmount).toLocaleString()} more for Free Shipping
           </p>
         )}
         <hr className="mt-2" />

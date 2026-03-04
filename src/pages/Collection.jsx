@@ -3,20 +3,60 @@ import { ShopContext } from "../context/ShopContext";
 import dropdown_icon from "../assets/dropdown_icon.png";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
+import { useSearchParams } from "react-router-dom";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Collection = () => {
   const { products, loading, search, showSearch } = useContext(ShopContext);
+  const [searchParams, setSearchParams] = useSearchParams();
+  usePageTitle("Collections");
 
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
 
-  const [category, setCategory] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
-  const [brand, setBrand] = useState([]);
-  const [sizes, setSizes] = useState([]);
-  const [bestsellerOnly, setBestsellerOnly] = useState(false);
-  const [priceRange, setPriceRange] = useState("");
-  const [sortType, setSortType] = useState("relevant");
+  // Initialize filter state from URL params
+  const [category, setCategory] = useState(
+    () => searchParams.get("category")?.split(",").filter(Boolean) ?? [],
+  );
+  const [subCategory, setSubCategory] = useState(
+    () => searchParams.get("type")?.split(",").filter(Boolean) ?? [],
+  );
+  const [brand, setBrand] = useState(
+    () => searchParams.get("brand")?.split(",").filter(Boolean) ?? [],
+  );
+  const [sizes, setSizes] = useState(
+    () => searchParams.get("size")?.split(",").filter(Boolean) ?? [],
+  );
+  const [bestsellerOnly, setBestsellerOnly] = useState(
+    () => searchParams.get("bestseller") === "1",
+  );
+  const [priceRange, setPriceRange] = useState(
+    () => searchParams.get("price") ?? "",
+  );
+  const [sortType, setSortType] = useState(
+    () => searchParams.get("sort") ?? "relevant",
+  );
+
+  // Sync filter state back to URL params whenever any filter changes
+  useEffect(() => {
+    const params = {};
+    if (category.length) params.category = category.join(",");
+    if (subCategory.length) params.type = subCategory.join(",");
+    if (brand.length) params.brand = brand.join(",");
+    if (sizes.length) params.size = sizes.join(",");
+    if (bestsellerOnly) params.bestseller = "1";
+    if (priceRange) params.price = priceRange;
+    if (sortType !== "relevant") params.sort = sortType;
+    setSearchParams(params, { replace: true });
+  }, [
+    category,
+    subCategory,
+    brand,
+    sizes,
+    bestsellerOnly,
+    priceRange,
+    sortType,
+  ]);
 
   // Extract unique brands from products
   const allBrands = [
@@ -132,23 +172,23 @@ const Collection = () => {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row gap-10 pt-10 border-t border-gray-300">
+    <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 pt-6 sm:pt-10 border-t border-gray-300">
       {/* FILTER SECTION */}
-      <div className="min-w-64">
+      <div className="sm:min-w-60 w-full sm:w-auto">
         <div
           onClick={() => setShowFilter(!showFilter)}
-          className="flex justify-between items-center cursor-pointer sm:cursor-default"
+          className="flex justify-between items-center cursor-pointer sm:cursor-default py-2 sm:py-0"
         >
           <h2 className="text-xl font-semibold">Filters</h2>
           <img
             src={dropdown_icon}
             alt="toggle"
-            className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
+            className={`h-3 sm:hidden transition-transform duration-200 ${showFilter ? "rotate-90" : ""}`}
           />
         </div>
 
         <div
-          className={`${showFilter ? "" : "hidden"} sm:block mt-6 space-y-6`}
+          className={`${showFilter ? "block" : "hidden"} sm:block mt-4 sm:mt-6 space-y-6`}
         >
           {/* Category */}
           <div>
@@ -252,9 +292,9 @@ const Collection = () => {
       </div>
 
       {/* PRODUCTS SECTION */}
-      <div className="flex-1">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
+      <div className="flex-1 min-w-0">
+        <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 flex-wrap">
             <Title text1="ALL" text2="COLLECTIONS" />
             <p className="text-sm text-gray-500">
               {filterProducts.length}{" "}
@@ -262,7 +302,7 @@ const Collection = () => {
             </p>
           </div>
 
-          {/* Improved Sort */}
+          {/* Sort */}
           <select
             value={sortType}
             onChange={(e) => setSortType(e.target.value)}
@@ -279,7 +319,7 @@ const Collection = () => {
           <p className="text-gray-500 text-center mt-10">No products found.</p>
         )}
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {filterProducts.map((item) => (
             <ProductItem
               key={item.id}

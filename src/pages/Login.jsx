@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Sign Up");
+  usePageTitle(currentState === "Login" ? "Sign In" : "Sign Up");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,6 +32,7 @@ const Login = () => {
           <div className="relative">
             <input
               type="text"
+              name="name"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
@@ -47,6 +50,7 @@ const Login = () => {
         <div className="relative">
           <input
             type="email"
+            name="email"
             value={formData.email}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
@@ -63,6 +67,7 @@ const Login = () => {
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
+            name="password"
             value={formData.password}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })

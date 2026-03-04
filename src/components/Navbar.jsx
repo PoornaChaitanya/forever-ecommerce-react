@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import logo from "../assets/logo.png";
 import search_icon from "../assets/search_icon.png";
 import profile_icon from "../assets/profile_icon.png";
 import cart_icon from "../assets/cart_icon.png";
 import menu_icon from "../assets/menu_icon.png";
 import dropdown_icon from "../assets/dropdown_icon.png";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 
 const navLinks = [
@@ -17,13 +17,31 @@ const navLinks = [
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { setShowSearch, getCartCount } = useContext(ShopContext);
-
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
+  const { setShowSearch, getCartCount, wishlist } = useContext(ShopContext);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setVisible(false);
+    setProfileOpen(false);
   }, [location]);
+
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex items-center justify-between py-5 font-medium">
@@ -61,28 +79,70 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center gap-6">
-        <button aria-label="Open search" onClick={() => setShowSearch(true)}>
+        <button
+          aria-label="Open search"
+          onClick={() => {
+            setShowSearch(true);
+            if (!location.pathname.includes("collection")) {
+              navigate("/collection");
+            }
+          }}
+        >
           <img src={search_icon} alt="search" className="w-5" />
         </button>
-        <div className="group relative">
-          <img
-            src={profile_icon}
-            alt="profile icon"
-            className="w-5 cursor-pointer"
-          />
+        <div className="relative" ref={profileRef}>
+          <button
+            onClick={() => setProfileOpen((prev) => !prev)}
+            aria-label="Open profile menu"
+          >
+            <img
+              src={profile_icon}
+              alt="profile icon"
+              className="w-5 cursor-pointer"
+            />
+          </button>
 
-          <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4 ">
-            <div className="flex flex-col gap-2 w-36 px-5 py-5 bg-slate-100 text-gray-500 rounded">
-              <p className="cursor-pointer hover:text-black">My Profile</p>
-              <Link to={"/orders"}>
-                <p className="cursor-pointer hover:text-black">Orders</p>
-              </Link>
-              <Link to={"/login"}>
-                <p className="cursor-pointer hover:text-black">Logout</p>
-              </Link>
+          {profileOpen && (
+            <div className="absolute dropdown-menu right-0 pt-4 z-50">
+              <div className="flex flex-col gap-2 w-36 px-5 py-5 bg-slate-100 text-gray-500 rounded shadow-md">
+                <p className="cursor-pointer hover:text-black">My Profile</p>
+                <Link to={"/orders"}>
+                  <p className="cursor-pointer hover:text-black">Orders</p>
+                </Link>
+                <Link to={"/wishlist"}>
+                  <p className="cursor-pointer hover:text-black">Wishlist</p>
+                </Link>
+                <Link to={"/login"}>
+                  <p className="cursor-pointer hover:text-black">Logout</p>
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
+
+        {/* Wishlist icon */}
+        <Link to="/wishlist" aria-label="Wishlist" className="relative">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-gray-600 hover:text-rose-500 transition-colors"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            />
+          </svg>
+          {wishlist.length > 0 && (
+            <span className="absolute -right-1.5 -top-1.5 w-4 h-4 flex items-center justify-center bg-rose-500 text-white text-[9px] font-bold rounded-full leading-none">
+              {wishlist.length > 9 ? "9+" : wishlist.length}
+            </span>
+          )}
+        </Link>
+
         <Link to="/cart" className="relative">
           <img
             src={cart_icon}
