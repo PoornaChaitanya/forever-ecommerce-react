@@ -12,10 +12,10 @@ const LatestCollection = () => {
   }, [products]);
 
   return (
-    <div className="my-10">
-      <div className="text-center py-8 text-3xl">
+    <div className="my-6 sm:my-10">
+      <div className="text-center py-6 sm:py-8 text-2xl sm:text-3xl">
         <Title text1={"LATEST"} text2={"COLLECTIONS"} />
-        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
+        <p className="w-11/12 sm:w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600 mt-2">
           Step into the new season with our latest arrivals. Designed with
           modern trends in mind and crafted for comfort, this collection brings
           fresh energy to your wardrobe.
@@ -24,7 +24,7 @@ const LatestCollection = () => {
 
       {/* Rendering Products */}
       {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 sm:gap-y-6">
           {Array.from({ length: 10 }).map((_, i) => (
             <div key={i} className="animate-pulse">
               <div className="bg-gray-200 rounded-xl aspect-square"></div>
@@ -34,7 +34,7 @@ const LatestCollection = () => {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 sm:gap-y-6">
           {latestProducts.map((item, index) => (
             <ProductItem
               key={index}
@@ -42,6 +42,12 @@ const LatestCollection = () => {
               image={item.image}
               name={item.name}
               price={item.price}
+              original={item.original}
+              discount={item.discount}
+              brand={item.brand}
+              rating={item.rating}
+              isNew={item.new}
+              stock={item.stock}
             />
           ))}
         </div>

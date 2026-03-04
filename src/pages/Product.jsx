@@ -18,7 +18,7 @@ const Product = () => {
     if (foundProduct) {
       setProductData(foundProduct);
       setImage(foundProduct.image[0]);
-      setSize("");
+      setSize(foundProduct.sizes?.[0] || "");
     }
   };
 
@@ -56,6 +56,11 @@ const Product = () => {
 
         {/* Product Information */}
         <div className="flex-1">
+          {productData.brand && (
+            <p className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+              {productData.brand}
+            </p>
+          )}
           <h1 className="font-medium text-2xl mt-2">{productData.name}</h1>
           <div className="flex items-center gap-1 mt-2">
             {Array.from({ length: 5 }, (_, i) => (
@@ -91,6 +96,36 @@ const Product = () => {
           <p className="mt-5 text-gray-500 md:w-4/5">
             {productData.description}
           </p>
+
+          {/* Tags */}
+          {productData.tags && productData.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {productData.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-full"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Stock Indicator */}
+          {productData.stock !== undefined && (
+            <div className="mt-4">
+              {productData.stock === 0 ? (
+                <p className="text-red-500 font-medium text-sm">Out of Stock</p>
+              ) : productData.stock <= 10 ? (
+                <p className="text-orange-500 font-medium text-sm">
+                  Only {productData.stock} left in stock!
+                </p>
+              ) : (
+                <p className="text-green-600 font-medium text-sm">In Stock</p>
+              )}
+            </div>
+          )}
+
           <div className="flex flex-col gap-4 my-8">
             <p>Select Size</p>
             <div className="flex gap-2">
@@ -98,7 +133,7 @@ const Product = () => {
                 <button
                   key={index}
                   onClick={() => setSize(item)}
-                  className={`border border-gray-200 py-2 px-4 bg-gray-100 ${item === size ? "border-orange-500 text-orange-500 bg-white" : ""}`}
+                  className={`border border-gray-200 py-2 px-4 bg-gray-100 transition ${item === size ? "border-orange-500 text-orange-500 bg-white" : "hover:border-gray-400"}`}
                 >
                   {item}
                 </button>
@@ -107,9 +142,14 @@ const Product = () => {
           </div>
           <button
             onClick={() => addToCart(productData.id, size)}
-            className="px-8 py-3 text-sm transition bg-black text-white active:bg-gray-700"
+            disabled={productData.stock === 0}
+            className={`px-8 py-3 text-sm transition ${
+              productData.stock === 0
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-black text-white active:bg-gray-700"
+            }`}
           >
-            ADD TO CART
+            {productData.stock === 0 ? "OUT OF STOCK" : "ADD TO CART"}
           </button>
           <hr className="mt-8 sm:w-4/5" />
           <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
@@ -153,6 +193,7 @@ const Product = () => {
         <RelatedProducts
           category={productData.category}
           subCategory={productData.subCategory}
+          productId={productData.id}
         />
       </div>
     </div>

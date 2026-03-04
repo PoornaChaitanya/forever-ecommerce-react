@@ -3,7 +3,7 @@ import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 
-const RelatedProducts = ({ category, subCategory }) => {
+const RelatedProducts = ({ category, subCategory, productId }) => {
   const { products } = useContext(ShopContext);
   const [related, setRelated] = useState([]);
 
@@ -15,10 +15,12 @@ const RelatedProducts = ({ category, subCategory }) => {
       productsCopy = productsCopy.filter(
         (item) => subCategory === item.subCategory,
       );
+      // Exclude the currently open product
+      productsCopy = productsCopy.filter((item) => item.id !== productId);
 
       setRelated(productsCopy.slice(0, 5));
     }
-  }, [products, category, subCategory]);
+  }, [products, category, subCategory, productId]);
   return (
     <div className="my-24">
       <div className="text-center text-3xl py-2">
@@ -33,6 +35,12 @@ const RelatedProducts = ({ category, subCategory }) => {
             name={item.name}
             image={item.image}
             price={item.price}
+            original={item.original}
+            discount={item.discount}
+            brand={item.brand}
+            rating={item.rating}
+            isNew={item.new}
+            stock={item.stock}
           />
         ))}
       </div>

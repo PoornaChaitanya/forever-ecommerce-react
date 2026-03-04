@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const slides = [
@@ -72,9 +73,12 @@ const Hero = () => {
                 {slide.title}
               </h1>
               <p className="text-sm sm:text-lg mb-6">{slide.subtitle}</p>
-              <button className="bg-white text-black px-6 py-2 rounded-full hover:bg-gray-200 transition">
+              <Link
+                to="/collection"
+                className="bg-white text-black px-6 py-2 rounded-full hover:bg-gray-200 transition"
+              >
                 Shop Now
-              </button>
+              </Link>
             </div>
           </div>
         ))}

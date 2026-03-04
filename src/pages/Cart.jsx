@@ -56,11 +56,18 @@ const Cart = () => {
                   <p className="text-xs sm:text-lg font-medium">
                     {productData.name}
                   </p>
-                  <div className="flex items-center gap-5 mt-2">
-                    <p>
+                  <div className="flex items-center gap-3 mt-2">
+                    <p className="font-medium">
                       {currency}
-                      {productData.price}
+                      {productData.price.toLocaleString()}
                     </p>
+                    {productData.original &&
+                      productData.original > productData.price && (
+                        <p className="text-sm text-gray-400 line-through">
+                          {currency}
+                          {productData.original.toLocaleString()}
+                        </p>
+                      )}
                     <p className="px-2 sm:px-3 sm:py-1 border border-gray-200 bg-slate-50">
                       {item.size}
                     </p>

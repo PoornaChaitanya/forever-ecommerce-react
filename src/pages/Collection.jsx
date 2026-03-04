@@ -12,10 +12,16 @@ const Collection = () => {
 
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
+  const [brand, setBrand] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [bestsellerOnly, setBestsellerOnly] = useState(false);
   const [priceRange, setPriceRange] = useState("");
   const [sortType, setSortType] = useState("relevant");
+
+  // Extract unique brands from products
+  const allBrands = [
+    ...new Set(products.map((p) => p.brand).filter(Boolean)),
+  ].sort();
 
   // Toggle Helpers
   const toggleValue = (value, state, setState) => {
@@ -29,6 +35,7 @@ const Collection = () => {
   const clearFilters = () => {
     setCategory([]);
     setSubCategory([]);
+    setBrand([]);
     setSizes([]);
     setBestsellerOnly(false);
     setPriceRange("");
@@ -71,6 +78,11 @@ const Collection = () => {
       productsCopy = productsCopy.filter((item) => item.bestseller);
     }
 
+    // Brand
+    if (brand.length > 0) {
+      productsCopy = productsCopy.filter((item) => brand.includes(item.brand));
+    }
+
     // Price
     if (priceRange === "799-1199") {
       productsCopy = productsCopy.filter(
@@ -102,6 +114,7 @@ const Collection = () => {
     products,
     category,
     subCategory,
+    brand,
     sizes,
     bestsellerOnly,
     priceRange,
@@ -199,6 +212,23 @@ const Collection = () => {
             </select>
           </div>
 
+          {/* Brand */}
+          {allBrands.length > 0 && (
+            <div>
+              <p className="font-medium mb-2">Brand</p>
+              {allBrands.map((item) => (
+                <label key={item} className="flex gap-2 text-sm mb-1">
+                  <input
+                    type="checkbox"
+                    checked={brand.includes(item)}
+                    onChange={() => toggleValue(item, brand, setBrand)}
+                  />
+                  {item}
+                </label>
+              ))}
+            </div>
+          )}
+
           {/* Bestseller */}
           <div>
             <label className="flex gap-2 text-sm">
@@ -257,10 +287,12 @@ const Collection = () => {
               name={item.name}
               image={item.image}
               price={item.price}
-              category={item.category}
-              subCategory={item.subCategory}
-              sizes={item.sizes}
-              bestseller={item.bestseller}
+              original={item.original}
+              discount={item.discount}
+              brand={item.brand}
+              rating={item.rating}
+              isNew={item.new}
+              stock={item.stock}
             />
           ))}
         </div>
