@@ -5,6 +5,7 @@ import profile_icon from "../assets/profile_icon.png";
 import cart_icon from "../assets/cart_icon.png";
 import menu_icon from "../assets/menu_icon.png";
 import dropdown_icon from "../assets/dropdown_icon.png";
+import heart_icon from "../assets/heart_icon.png";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 
@@ -122,20 +123,7 @@ const Navbar = () => {
 
         {/* Wishlist icon */}
         <Link to="/wishlist" aria-label="Wishlist" className="relative">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-5 h-5 text-gray-600 hover:text-rose-500 transition-colors"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-            />
-          </svg>
+          <img src={heart_icon} alt="wishlist" className="w-5" />
           {wishlist.length > 0 && (
             <span className="absolute -right-1.5 -top-1.5 w-4 h-4 flex items-center justify-center bg-rose-500 text-white text-[9px] font-bold rounded-full leading-none">
               {wishlist.length > 9 ? "9+" : wishlist.length}

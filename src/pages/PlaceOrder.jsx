@@ -175,10 +175,10 @@ const PlaceOrder = () => {
           <Title text1={"PAYMENT"} text2={"METHOD"} />
 
           {/* Payment Method */}
-          <div className="flex gap-4 flex-col lg:flex-row mt-5">
+          <div className="flex gap-4 flex-col mt-5">
             <div
               onClick={() => setMethod("stripe")}
-              className={`flex-1 flex items-center justify-center sm:justify-start gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "stripe" ? "border-black bg-gray-50" : "border-gray-200"}`}
+              className={`flex-1 flex items-center justify-start  gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "stripe" ? "border-black bg-gray-50" : "border-gray-200"}`}
             >
               <span
                 className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full transition-colors ${method === "stripe" ? "bg-green-500 border-green-500" : "bg-white"}`}
@@ -189,9 +189,10 @@ const PlaceOrder = () => {
                 className="h-5 object-contain"
               />
             </div>
+
             <div
               onClick={() => setMethod("razorpay")}
-              className={`flex-1 flex items-center justify-center sm:justify-start gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "razorpay" ? "border-black bg-gray-50" : "border-gray-200"}`}
+              className={`flex-1 flex items-center justify-start gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "razorpay" ? "border-black bg-gray-50" : "border-gray-200"}`}
             >
               <span
                 className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full transition-colors ${method === "razorpay" ? "bg-green-500 border-green-500" : "bg-white"}`}
@@ -202,9 +203,10 @@ const PlaceOrder = () => {
                 className="h-5 object-contain"
               />
             </div>
+
             <div
               onClick={() => setMethod("cod")}
-              className={`flex-1 flex items-center justify-center sm:justify-start gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "cod" ? "border-black bg-gray-50" : "border-gray-200"}`}
+              className={`flex-1 flex items-center justify-start gap-4 border p-3 cursor-pointer rounded-lg transition-colors ${method === "cod" ? "border-black bg-gray-50" : "border-gray-200"}`}
             >
               <span
                 className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full transition-colors ${method === "cod" ? "bg-green-500 border-green-500" : "bg-white"}`}
